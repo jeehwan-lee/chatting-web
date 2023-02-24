@@ -12,7 +12,8 @@ app.get("/", (req, res) => res.sendFile(__dirname + "/views/" + "home.html"));
 app.get("/*", (req, res) => res.redirect("/"));
 
 socketServer.on("connection", (socket) => {
-  console.log(socket);
+  // console.log(socket);
+  socket.on("message", (message) => console.log(message));
 });
 
 const handleListen = () => {
