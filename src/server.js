@@ -10,6 +10,7 @@ const sockets = [];
 const rooms = ["room1", "room2"];
 
 app.use("/js", express.static(__dirname + "/js"));
+app.use("/style", express.static(__dirname + "/style"));
 
 app.get("/", (req, res) => res.sendFile(__dirname + "/views/" + "home.html"));
 app.get("/*", (req, res) => res.redirect("/"));

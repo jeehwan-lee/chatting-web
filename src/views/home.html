@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Chatting</title>
+    <link rel="stylesheet" href="/style/home.css" />
   </head>
   <body>
     <header>Chatting Web Page</header>
@@ -18,15 +19,16 @@
         <button id="roomMake">방 만들기</button>
       </div>
       <div id="modal">
-        <form>
+        <div id="modalContent">
           <input
             type="text"
             id="roomNameText"
             place="방 이름을 입력해주세요."
             ,required
           />
-          <button type="submit" id="roomMakeAndEnter">생성</button>
-        </form>
+          <button id="roomMakeAndEnter">생성</button>
+          <button id="cancel">취소</button>
+        </div>
       </div>
       <form id="textSend">
         <input
