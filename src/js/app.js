@@ -5,6 +5,9 @@ const room = document.getElementById("room");
 const roomList = document.getElementById("roomList");
 const roomMake = document.getElementById("roomMake");
 const modal = document.getElementById("modal");
+const roomName = document.getElementById("roomNameText");
+
+let currentRoom;
 
 form.hidden = true;
 modal.hidden = true;
@@ -18,19 +21,28 @@ socket.on("init", (rooms) => {
   });
 });
 
-function modalClick(event) {
-  if (event.target.id == "modal") {
-    // modal창의 바깥부분을 클릭했을 경우 close
-    modal.hidden = true;
-  } else if (event.target.id == "roomMakeAndEnter") {
-    // 생성 버튼을 클릭했을 경우
-    const roomName = document.getElementById("roomNameText");
-    socket.emit("make_room", roomName.value);
-    // TODO : 동일한 채팅방 이름이 있을 경우 (추후 DB로 확인)
+socket.on("welcome", () => {
+  addMessage("누군가 입장했습니다.");
+});
 
-    // TODO : 채팅방을 만들 경우 채팅방 이름 저장 (추후 DB에 저장)
-    // 방 생성
-    // TODO : 추후에는 서버로 방 이름을 보내서 검증 후 서버에서 생성
+socket.on("send_message", function (message) {
+  addMessage(message);
+});
+
+function addMessage(message) {
+  const ul = document.getElementById("message");
+  const li = document.createElement("li");
+
+  li.innerText = message;
+  ul.appendChild(li);
+}
+
+function makeRoom(check) {
+  if (check == false) {
+    // 동일한 이름의 채팅방이 있을 경우
+    alert("채팅방이 존재합니다.");
+    roomName.value = "";
+  } else {
     const li = document.createElement("li");
     li.textContent = roomName.value;
     roomList.appendChild(li);
@@ -39,21 +51,36 @@ function modalClick(event) {
     room.hidden = true;
     form.hidden = false;
     modal.hidden = true;
+
+    currentRoom = roomName.value;
+  }
+}
+
+function modalClick(event) {
+  if (event.target.id == "modal") {
+    // modal창의 바깥부분을 클릭했을 경우 close
+    modal.hidden = true;
+    roomName.value = "";
+  } else if (event.target.id == "roomMakeAndEnter") {
+    // 생성 버튼을 클릭했을 경우
+    socket.emit("make_room", roomName.value, makeRoom);
   } else if (event.target.id == "cancel") {
     // 취소버튼을 누르면 modal hidden = true
     modal.hidden = true;
+    roomName.value = "";
   }
 }
 
 function messageSubmit(event) {
   event.preventDefault();
   const input = document.getElementById("messageText");
-  socket.emit("send_message", input.value);
+  socket.emit("send_message", input.value, currentRoom);
   input.value = "";
 }
 
 function enterRoom(event) {
   socket.emit("enter_room", event.target.textContent);
+  currentRoom = event.target.textContent;
   room.hidden = true;
   form.hidden = false;
 }

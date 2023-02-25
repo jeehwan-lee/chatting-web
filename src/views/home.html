@@ -12,10 +12,7 @@
     <main>
       <h2>Welcome</h2>
       <div id="room">
-        <ul id="roomList">
-          <li>Room 1</li>
-          <li>Room 2</li>
-        </ul>
+        <ul id="roomList"></ul>
         <button id="roomMake">방 만들기</button>
       </div>
       <div id="modal">
@@ -24,22 +21,27 @@
             type="text"
             id="roomNameText"
             place="방 이름을 입력해주세요."
-            ,required
           />
           <button id="roomMakeAndEnter">생성</button>
           <button id="cancel">취소</button>
         </div>
       </div>
-      <form id="textSend">
-        <input
-          type="text"
-          id="messageText"
-          placeholder="메세지를 입력해주세요."
-          ,
-          required
-        />
-        <button type="submit">전송</button>
-      </form>
+      <div id="chattingRoom">
+        <div id="roomName"></div>
+        <div id="chatting">
+          <ul id="message"></ul>
+        </div>
+        <form id="textSend">
+          <input
+            type="text"
+            id="messageText"
+            placeholder="메세지를 입력해주세요."
+            ,
+            required
+          />
+          <button type="submit">전송</button>
+        </form>
+      </div>
     </main>
   </body>
   <script src="/socket.io/socket.io.js"></script>
