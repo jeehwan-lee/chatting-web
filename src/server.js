@@ -51,6 +51,15 @@ socketServer.on("connection", (socket) => {
     // send_message 이벤트가 발생하면 채팅방에 접속한 모든 클라이언트에게 message 다시 전송
     socketServer.to(currentRoom).emit("send_message", message);
   });
+
+  socket.on("exit", () => {
+    socket.rooms.forEach((room) => socketServer.to(room).emit("bye"));
+    socket.disconnect();
+  });
+
+  socket.on("disconnecting", () => {
+    socket.rooms.forEach((room) => socketServer.to(room).emit("bye"));
+  });
 });
 
 const handleListen = () => {
